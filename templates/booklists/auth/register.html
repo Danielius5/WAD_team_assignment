@@ -1,5 +1,7 @@
 {% extends 'booklists/layouts/auth.html' %}
 
+{% load i18n %}
+
 {% block body_block %}
 
     <form class="form-register" method="post">
@@ -8,27 +10,28 @@
         {% include 'booklists/partials/auth-message.html'%}
 
         <div class="form-group">
-            <strong><label for="inputEmail">Email address</label></strong>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Enter email address" required autofocus
+            <strong><label for="inputEmail">{% translate 'Email address' %}</label></strong>
+            <input type="email" id="inputEmail" class="form-control" placeholder="{% translate 'Enter email address' %}" required autofocus
                    name="email">
         </div>
 
         <div class="form-group">
-            <strong><label for="inputPassword">Password</label></strong>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Enter password" required name="password">
+            <strong><label for="inputPassword">{% translate 'Password' %}</label></strong>
+            <input type="password" id="inputPassword" class="form-control" placeholder="{% translate 'Enter password' %}" required name="password">
         </div>
 
         <div class="form-group">
-            <strong><label for="inputPasswordConfirmation">Password Confirmation</label></strong>
-            <input type="password" id="inputPasswordConfirmation" class="form-control" placeholder="Enter password confirmation" required name="password_confirmation">
+            <strong><label for="inputPasswordConfirmation">{% translate 'Password confirmation' %}</label></strong>
+            <input type="password" id="inputPasswordConfirmation" class="form-control" placeholder="{% translate 'Enter password confirmation' %}" required name="password_confirmation">
         </div>
 
         <div class="form-group">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">{% translate 'Register' %}</button>
         </div>
 
         <div class="text-center">
-            Already have an account? <a href="{% url 'booklists:user_login' %}">Log in!</a>
+            {% comment %} Asked in register page {% endcomment %}
+            {% translate 'Already have an account' %}? <a href="{% url 'booklists:user_login' %}">{% translate 'Sign in' %}!</a>
         </div>
 
     </form>

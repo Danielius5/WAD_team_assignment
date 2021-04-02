@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils.translation import gettext as _
 
 def user_login(request):
     # for now - just render the login form no matter the type of request
