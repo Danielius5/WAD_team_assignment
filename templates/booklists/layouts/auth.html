@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="BookLists website">
+    <meta name="author" content="WAD 2020/21 TEAM 1A">
+
+    <title>
+        BookLists -
+        {% block title_block %}
+            Main
+        {% endblock %}
+    </title>
+
+    {# Load the tag library #}
+    {% load bootstrap4 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    {% block custom_css %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="col-md-8 offset-md-2" style="position:relative; height:100vh">
+            <div class="card" style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%)">
+                <div class="card-body">
+                    {% block body_block %}
+
+                    {% endblock %}
+                    <p class="mt-5 mb-3 text-muted text-center">&copy; 2021</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
