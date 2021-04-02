@@ -1,5 +1,7 @@
 {% extends 'booklists/layouts/auth.html' %}
 
+{% load i18n %}
+
 {% block body_block %}
 
     <form class="form-signin" method="post">
@@ -8,22 +10,23 @@
         {% include 'booklists/partials/auth-message.html'%}
 
         <div class="form-group">
-            <strong><label for="inputEmail">Email address</label></strong>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Enter email address" required autofocus
+            <strong><label for="inputEmail">{% translate 'Email address' %}</label></strong>
+            <input type="email" id="inputEmail" class="form-control" placeholder="{% translate 'Enter email address' %}" required autofocus
                    name="email">
         </div>
 
         <div class="form-group">
-            <strong><label for="inputPassword">Password</label></strong>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Enter password" required name="password">
+            <strong><label for="inputPassword">{% translate 'Password' %}</label></strong>
+            <input type="password" id="inputPassword" class="form-control" placeholder="{% translate 'Enter password' %}" required name="password">
         </div>
 
         <div class="form-group">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">{% translate 'Sign in' %}</button>
         </div>
 
         <div class="text-center">
-            New here? <a href="{% url 'booklists:user_register' %}">Create an account!</a>
+            {% comment %} Asked in login page {% endcomment %}
+            {% translate 'New here' %}? <a href="{% url 'booklists:user_register' %}">{% translate 'Create an account!' %}!</a>
         </div>
 
     </form>
