@@ -1,0 +1,102 @@
+{% load i18n %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="BookLists website">
+    <meta name="author" content="WAD 2020/21 TEAM 1A">
+
+    <title>
+        BookLists -
+        {% block title_block %}
+            {% translate 'Main' %}
+        {% endblock %}
+    </title>
+
+    {# Load the tag library #}
+    {% load bootstrap4 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    <link rel="stylesheet" href="{% static "css/main.css"%}">
+    {% block custom_css %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+
+        <!-- Menu row -->
+        <div class="row">
+            <div class="col-md-12 p-0">
+                {% include 'booklists/partials/menu.html' %}
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="row mt-5">
+            <div class="col-md-9">
+                <div class="card">
+                    {% block body_block %}
+
+                    {% endblock %}
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    </ol>
+                </nav>
+                <div class="card">
+                    <div class="card-header">
+                        Top 5 Books On BookLists
+                    </div>
+                    <div class="card-body">
+                        <!-- TODO add missing translations on this page and potentially export to partials -->
+                        <ol>
+                            <li>Crime and punishment</li>
+                            <li>Things fall apart</li>
+                            <li>Moby Dick</li>
+                            <li>The Lord Of The Rings</li>
+                            <li>Catch-22</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        Top 5 Authors On BookLists
+                    </div>
+                    <div class="card-body">
+                        <ol>
+                            <li>Crime and punishment</li>
+                            <li>Things fall apart</li>
+                            <li>Moby Dick</li>
+                            <li>The Lord Of The Rings</li>
+                            <li>Catch-22</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% block custom_js %}
+
+{% endblock %}
+
+</body>
+</html>

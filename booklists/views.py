@@ -8,3 +8,6 @@ def user_login(request):
 def user_register(request):
     # for now - just render the register form no matter the type of request
     return render(request, 'booklists/auth/register.html')
+
+def index(request):
+    return render(request, 'booklists/index.html')
