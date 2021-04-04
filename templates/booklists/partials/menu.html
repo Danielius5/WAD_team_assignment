@@ -1,0 +1,44 @@
+{% load i18n %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand" href="{% url 'booklists:index' %}">BookLists</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-5">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">{% translate 'My Lists' %}</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{% translate 'Create List' %}</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ml-5">
+                <form class="d-flex">
+                    <div class="input-group">
+                        <input type="text" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="search-button">
+                        <button class="btn btn-outline-light rounded-0" type="submit" id="search-button">Search</button>
+                    </div>
+                </form>
+            </ul>
+
+            <ul class="navbar-nav justify-content-end ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{% translate 'Admin' %}</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{% translate 'Log Out' %}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
