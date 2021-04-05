@@ -4,7 +4,7 @@
 
 {% block body_block %}
 
-    <form class="form-register" method="post">
+    <form class="form-register" method="post" id="user_form" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% include 'booklists/partials/auth-message.html'%}

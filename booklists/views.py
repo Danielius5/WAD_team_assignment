@@ -30,7 +30,7 @@ def user_login(request):
 
 def user_register(request):
     # for now - just render the register form no matter the type of request
-    register=False
+    registered=False
     if request.method =='POST':
         user_form=UserForm(request.POST)
         profile_form=UserProfileForm(request.POST)
@@ -47,8 +47,8 @@ def user_register(request):
     else:
         user_form=UserForm()
         profile_form=UserProfileForm()
-
-    return render(request, 'booklists/auth/register.html')
+    context = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
+    return render(request, 'booklists/auth/register.html',context)
 
 def index(request):
     return render(request, 'booklists/index.html')
