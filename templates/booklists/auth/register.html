@@ -10,19 +10,25 @@
         {% include 'booklists/partials/auth-message.html'%}
 
         <div class="form-group">
+            <strong><label for="inputUsername">{% translate 'Username' %}</label></strong>
+            <input type="username" id="inputUsername" class="form-control" placeholder="{% translate 'Enter username' %}" required autofocus
+                   name="username">
+        </div>
+<!--
+        <div class="form-group">
             <strong><label for="inputEmail">{% translate 'Email address' %}</label></strong>
             <input type="email" id="inputEmail" class="form-control" placeholder="{% translate 'Enter email address' %}" required autofocus
                    name="email">
         </div>
-
+-->
         <div class="form-group">
             <strong><label for="inputPassword">{% translate 'Password' %}</label></strong>
-            <input type="password" id="inputPassword" class="form-control" placeholder="{% translate 'Enter password' %}" required name="password">
+            <input type="password" id="inputPassword1" class="form-control" placeholder="{% translate 'Enter password' %}" required name="password1">
         </div>
 
         <div class="form-group">
             <strong><label for="inputPasswordConfirmation">{% translate 'Password confirmation' %}</label></strong>
-            <input type="password" id="inputPasswordConfirmation" class="form-control" placeholder="{% translate 'Enter password confirmation' %}" required name="password_confirmation">
+            <input type="password" id="inputPassword2" class="form-control" placeholder="{% translate 'Enter password confirmation' %}" required name="password2">
         </div>
 
         <div class="form-group">
