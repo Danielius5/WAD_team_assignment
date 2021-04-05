@@ -8,7 +8,6 @@ from django.urls import reverse
 from booklists.models import User
 
 
-
 def user_login(request):
     errors = None
     registered_flag = bool(request.GET.get('registered', False))
@@ -21,9 +20,9 @@ def user_login(request):
                 login(request,user)
                 return redirect(reverse('booklists:index'))
             else:
-                errors = "Your Booklist account is disabled"
+                errors = _("Your Booklist account is disabled")
         else:
-            errors = "Invalid login details supplied."
+            errors = _("Invalid login details supplied.")
 
     context = {'errors' : errors, 'registered' : registered_flag}
     return render(request, 'booklists/auth/login.html', context)
@@ -40,9 +39,9 @@ def user_register(request):
                     user.save()
                     return redirect(reverse('booklists:login') + '?registered=True')
                 else:
-                    errors = "User already exists"
+                    errors = _("User already exists")
             else:
-                errors = "Passwords do not match"
+                errors = _("Passwords do not match")
         else:
             errors = user_form.errors
     else:
