@@ -5,28 +5,28 @@ from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse
+from django.contrib import messages
 
 
 
 
 def user_login(request):
     if request.method =='POST':
-        email=request.POST.get('email')
+        username=request.POST.get('username')
         password=request.POST.get('password')
-        user=authenticate(email=email,password=password)
+        user=authenticate(username=username,password=password)
         if user:
             if user.is_active:
                 login(request,user)
-                return redirect(reverse('booklist:index'))
+                messages.success(request,f"Welcome {username}." )
+                return redirect('booklists:index')
             else:
-                return HttpResponse("Your Booklist account is disabled")
+                messages.error(request,("Invalid username or password."))
         else:
-            print(f"Invalid login details: {email}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            messages.error(request,("Invalid username or password."))
 
-    else:
 
-        return render(request, 'booklists/auth/login.html')
+    return render(request, 'booklists/auth/login.html')
 
 def user_register(request):
     registered=False
@@ -34,15 +34,14 @@ def user_register(request):
         user_form=UserForm(request.POST)
         if user_form.is_valid():
             user=user_form.save()
-            user.set_password(user.password)
-            user.save()
-            registered=True
+            login(request,user)
+            return redirect("booklists:index") ## change to homepage when ready
         else:
-            print(user_form.errors)
+            messages.error(request,("Username might be taken or password is too short"))
     else:
-        user_form=UserForm()
-    context = {'user_form': user_form,'profile_form': registered}
-    return render(request, 'booklists/auth/register.html',context)
+        user_form=UserForm
+        messages.error(request,("Invalid"))
+    return render(request, 'booklists/auth/register.html')
 
 def index(request):
     return render(request, 'booklists/index.html')
@@ -51,6 +50,6 @@ def index(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('booklist:index'))
+    return redirect(reverse('booklist:index'))##change to homepage when ready
 
 
