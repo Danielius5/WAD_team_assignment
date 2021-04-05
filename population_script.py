@@ -4,7 +4,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE','wad_team_project.settings')
 
 import django
 django.setup()
-from booklists.models import Book,Genre,Author
+from booklists.models import Book, Genre, Author, Rating, User, Comment, List
 
 def populate():
     genres = ['Sci-Fi','Horror','Action','Romance']
