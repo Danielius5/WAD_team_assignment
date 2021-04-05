@@ -37,10 +37,9 @@ def user_register(request):
             login(request,user)
             return redirect("booklists:index") ## change to homepage when ready
         else:
-            messages.error(request,("Username might be taken or password is too short"))
+            messages.error(request,user_form.errors)
     else:
         user_form=UserForm
-        messages.error(request,("Invalid"))
     return render(request, 'booklists/auth/register.html')
 
 def index(request):
