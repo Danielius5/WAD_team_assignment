@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Author(models.Model):
     
     name = models.CharField(max_length=128)
-    about = models.TextField()
+    about = models.TextField(max_length=256,null=True,blank=True)
         
     def __str__(self):
         return self.name
@@ -24,7 +24,8 @@ class Book(models.Model):
     name = models.CharField(max_length=128)
     release_date = models.DateField()
     no_of_pages = models.IntegerField()
-    cover = models.ImageField(upload_to='book_covers')
+    cover = models.ImageField(upload_to='book_covers',default='/images/picturenotfound.jpg')
+    genre = models.ManyToManyField(Genre)
     
     def __str__(self):
         return self.name
@@ -59,3 +60,8 @@ class List(models.Model):
     def __str__(self):
         return self.name
     
+class UserProfile(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    website=models.URLField(blank=True)
+    def __str__(self):
+        return self.user.username
