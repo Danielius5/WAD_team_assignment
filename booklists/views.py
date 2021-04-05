@@ -50,6 +50,6 @@ def index(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('booklist:index'))##change to homepage when ready
+    return redirect(reverse('booklists:index'))##change to homepage when ready
 
 
