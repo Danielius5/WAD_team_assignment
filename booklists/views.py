@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.utils.translation import gettext as _
-from booklists.forms import UserForm
+from booklists.forms import *
 from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -54,7 +54,6 @@ def user_logout(request):
 
 def lists_index(request, username):
 
-    # ------------- return redirect(reverse('booklists:lists_index') + '?created=True')
     created_flag = bool(request.GET.get('created', False))
 
     if request.method == 'GET':
@@ -65,6 +64,26 @@ def lists_index(request, username):
 
         lists = lists.filter(user=User.objects.filter(username=username).first())
 
-        context = {'lists' : lists, 'created' : created_flag, 'username' : username}
+        context = {'lists' : lists, 'created' : created_flag, 'username' : username, 'current_user' : request.user}
         return render(request, 'booklists/lists/index.html', context)
 
+@login_required
+def lists_create(request, username):
+
+    if request.user.username == username:
+        if request.method =='POST':
+            lists_create_form=ListForm(request.POST)
+
+            if lists_create_form.is_valid():
+
+                list = lists_create_form.save(commit=False)
+                list.user = request.user
+                list.save()
+                return redirect(reverse('booklists:lists_index', kwargs={'username': username}) + '?created=True')
+            else:
+                messages.error(request, lists_create_form.errors)
+
+        return render(request, 'booklists/lists/create.html')
+    else:
+        # unauthorised
+        return render(request, 'booklists/errors/401.html', status=401)
