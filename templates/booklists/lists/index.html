@@ -28,6 +28,9 @@
         {% if created  %}
             <div class="alert alert-success"><strong>{% translate 'Success' %}!</strong> {% translate 'A new list created' %}!</div>
         {% endif %}
+        {% if edited  %}
+            <div class="alert alert-success"><strong>{% translate 'Success' %}!</strong> {% translate 'List successfully edited' %}!</div>
+        {% endif %}
 
         <table class="table table-striped table-bordered text-center">
             <thead>
@@ -50,7 +53,7 @@
                             </td>
                             <td class="col-md-4 col-xs-1">
                                 <a class="btn btn-primary btn-sm" href="#" role="button">{% translate 'View' %}</a>
-                                <a class="btn btn-warning btn-sm" href="#" role="button">{% translate 'Edit' %}</a>
+                                <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username list.slug %}" role="button">{% translate 'Edit' %}</a>
                                 <a class="btn btn-danger btn-sm" href="#" role="button">{% translate 'Delete' %}</a>
                             </td>
                         </tr>

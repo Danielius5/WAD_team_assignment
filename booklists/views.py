@@ -55,6 +55,7 @@ def user_logout(request):
 def lists_index(request, username):
 
     created_flag = bool(request.GET.get('created', False))
+    edited_flag = bool(request.GET.get('edited', False))
 
     if request.method == 'GET':
 
@@ -64,7 +65,7 @@ def lists_index(request, username):
 
         lists = lists.filter(user=User.objects.filter(username=username).first())
 
-        context = {'lists' : lists, 'created' : created_flag, 'username' : username, 'current_user' : request.user}
+        context = {'lists' : lists, 'created' : created_flag, 'username' : username, 'current_user' : request.user, 'edited' : edited_flag}
         return render(request, 'booklists/lists/index.html', context)
 
 @login_required
@@ -75,15 +76,40 @@ def lists_create(request, username):
             lists_create_form=ListForm(request.POST)
 
             if lists_create_form.is_valid():
-
                 list = lists_create_form.save(commit=False)
                 list.user = request.user
                 list.save()
                 return redirect(reverse('booklists:lists_index', kwargs={'username': username}) + '?created=True')
+
             else:
                 messages.error(request, lists_create_form.errors)
 
         return render(request, 'booklists/lists/create.html')
+    else:
+        # unauthorised
+        return render(request, 'booklists/errors/401.html', status=401)
+
+@login_required
+def lists_edit(request, username, list_slug):
+
+    if request.user.username == username:
+        current_data = List.objects.filter(slug=list_slug).first()
+
+        if not current_data is None:
+
+            if request.method =='POST':
+                lists_create_form=ListForm(request.POST or None, instance=current_data)
+                if lists_create_form.is_valid():
+                    lists_create_form.save()
+                    return redirect(reverse('booklists:lists_index', kwargs={'username': username}) + '?edited=True')
+                else:
+                    messages.error(request, lists_create_form.errors)
+
+            return render(request, 'booklists/lists/edit.html', context={'current_data' : current_data})
+
+        else:
+            # not found
+            return render(request, 'booklists/errors/404.html', status=404)
     else:
         # unauthorised
         return render(request, 'booklists/errors/401.html', status=401)

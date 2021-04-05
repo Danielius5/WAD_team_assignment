@@ -1,0 +1,32 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {% translate 'Edit list: ' %} {{ current_data.name }}
+    </div>
+
+    <div class="card-body">
+        <form class="form-create-list" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <strong><label for="inputName">{% translate 'List Name' %}</label></strong>
+                <input type="text" id="inputName" class="form-control" placeholder="{% translate 'Enter list name' %}" required autofocus
+                       name="name" value="{{ current_data.name }}">
+            </div>
+
+            <div class="form-group">
+                <strong><label for="inputIsPublic">{% translate 'Is Public' %}?</label></strong>
+                <input type="checkbox" id="inputIsPublic" name="is_public" {% if current_data.is_public %} checked="checked"{% endif %}>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary float-right" type="submit">{% translate 'Edit List' %}</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
