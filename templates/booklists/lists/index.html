@@ -1,0 +1,64 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'booklists:index' %}">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page">User</li>
+            <li class="breadcrumb-item" aria-current="page"><a href="#">NOLINK {{ username }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lists</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {% translate 'My Lists' %}
+        <a class="btn btn-success btn-sm float-right" href="#" role="button">{% translate 'Add List' %}</a>
+    </div>
+
+    <div class="card-body">
+
+        {% if created  %}
+            <div class="alert alert-success"><strong>{% translate 'Success' %}!</strong> {% translate 'A new list created: ' %} <i>Classic Books</i></div>
+        {% endif %}
+
+        <table class="table table-striped table-bordered text-center">
+            <thead>
+            <tr class="d-flex">
+                <th class="col-md-1 col-xs-1">#</th>
+                <th class="col-md-7">{% translate 'Name Of The List' %}</th>
+                <th class="col-md-4">{% translate 'Actions' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% if lists %}
+                    {% for list in lists %}
+                         <tr class="d-flex">
+                            <td class="col-md-1 col-xs-1">{{ forloop.counter }}</td>
+                            <td class="col-md-7">
+                                {{ list.name }}
+                                {% if not list.is_public %}
+                                    <span class="badge badge-secondary">Private</span>
+                                {% endif %}
+                            </td>
+                            <td class="col-md-4 col-xs-1">
+                                <a class="btn btn-primary btn-sm" href="#" role="button">{% translate 'View' %}</a>
+                                <a class="btn btn-warning btn-sm" href="#" role="button">{% translate 'Edit' %}</a>
+                                <a class="btn btn-danger btn-sm" href="#" role="button">{% translate 'Delete' %}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                <tr class="d-flex">
+                    <td colspan = "3">{% translate 'You have not created any lists yet'%}.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

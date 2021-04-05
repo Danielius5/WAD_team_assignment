@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib import messages
-
+from booklists.models import *
 
 
 
@@ -51,4 +51,20 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('booklists:index'))##change to homepage when ready
 
+
+def lists_index(request, username):
+
+    # ------------- return redirect(reverse('booklists:lists_index') + '?created=True')
+    created_flag = bool(request.GET.get('created', False))
+
+    if request.method == 'GET':
+
+        lists = List.objects
+        if request.user.username != username:
+            lists = lists.filter(is_public=True)
+
+        lists = lists.filter(user=User.objects.filter(username=username).first())
+
+        context = {'lists' : lists, 'created' : created_flag, 'username' : username}
+        return render(request, 'booklists/lists/index.html', context)
 
