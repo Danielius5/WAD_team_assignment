@@ -1,22 +1,32 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
-  
+from django.template.defaultfilters import slugify
+
     
 class Author(models.Model):
     
     name = models.CharField(max_length=128)
     about = models.TextField(max_length=256,null=True,blank=True)
-        
+    slug = models.SlugField(unique=True)
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(str(self.id) + "-" + self.name)
+        super(Author, self).save(*args, **kwargs)
     
 class Genre(models.Model):
     
     name = models.CharField(max_length=128)
-    
+    slug = models.SlugField(unique=True)
+
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(str(self.id) + "-" + self.name)
+        super(Genre, self).save(*args, **kwargs)
     
 class Book(models.Model):
 
@@ -26,9 +36,14 @@ class Book(models.Model):
     no_of_pages = models.IntegerField()
     cover = models.ImageField(upload_to='book_covers',default='/images/picturenotfound.jpg')
     genre = models.ManyToManyField(Genre)
-    
+    slug = models.SlugField(unique=True)
+
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(str(self.id) + "-" + self.name)
+        super(Book, self).save(*args, **kwargs)
     
 class Rating(models.Model):
     
@@ -39,7 +54,7 @@ class Rating(models.Model):
         )
     
     def __str__(self):
-        return "id: " + self.id + " rating: " + self.rating
+        return "id: " + str(self.id) + " rating: " + str(self.rating)
     
 class Comment(models.Model):
     
@@ -52,7 +67,7 @@ class Comment(models.Model):
         ordering = ['created']
 
     def __str__(self):
-        return 'Comment {} by {}'.format(self.body, self.user.get_username)
+        return 'Comment {} by {}'.format(self.comment, self.user.get_username)
     
 class List(models.Model):
     
@@ -60,6 +75,11 @@ class List(models.Model):
     books = models.ManyToManyField(Book)
     name = models.CharField(max_length=128)
     is_public = models.BooleanField(default=True)
-    
+    slug = models.SlugField(unique=True)
+
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(str(self.id) + "-" + self.name)
+        super(List, self).save(*args, **kwargs)
