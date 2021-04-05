@@ -9,10 +9,14 @@
 
         {% include 'booklists/partials/auth-message.html'%}
 
+        {% if errors != None %}
+            <div class="alert alert-danger"><strong>{% translate 'Failure' %}!</strong> {{  errors  }} </div>
+        {% endif %}
+
         <div class="form-group">
-            <strong><label for="inputEmail">{% translate 'Email address' %}</label></strong>
-            <input type="email" id="inputEmail" class="form-control" placeholder="{% translate 'Enter email address' %}" required autofocus
-                   name="email">
+            <strong><label for="inputUsername">{% translate 'Username' %}</label></strong>
+            <input type="text" id="inputUsername" class="form-control" placeholder="{% translate 'Enter username' %}" required autofocus
+                   name="username">
         </div>
 
         <div class="form-group">
@@ -31,7 +35,7 @@
 
         <div class="text-center">
             {% comment %} Asked in register page {% endcomment %}
-            {% translate 'Already have an account' %}? <a href="{% url 'booklists:user_login' %}">{% translate 'Sign in' %}!</a>
+            {% translate 'Already have an account' %}? <a href="{% url 'booklists:login' %}">{% translate 'Sign in' %}!</a>
         </div>
 
     </form>

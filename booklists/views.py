@@ -5,43 +5,50 @@ from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse
-
+from booklists.models import User
 
 
 
 def user_login(request):
+    errors = None
+    registered_flag = bool(request.GET.get('registered', False))
     if request.method =='POST':
-        email=request.POST.get('email')
+        username=request.POST.get('username')
         password=request.POST.get('password')
-        user=authenticate(email=email,password=password)
+        user=authenticate(username=username,password=password)
         if user:
             if user.is_active:
                 login(request,user)
-                return redirect(reverse('booklist:index'))
+                return redirect(reverse('booklists:index'))
             else:
-                return HttpResponse("Your Booklist account is disabled")
+                errors = "Your Booklist account is disabled"
         else:
-            print(f"Invalid login details: {email}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            errors = "Invalid login details supplied."
 
-    else:
-
-        return render(request, 'booklists/auth/login.html')
+    context = {'errors' : errors, 'registered' : registered_flag}
+    return render(request, 'booklists/auth/login.html', context)
 
 def user_register(request):
-    registered=False
+    errors = None
     if request.method =='POST':
         user_form=UserForm(request.POST)
         if user_form.is_valid():
-            user=user_form.save()
-            user.set_password(user.password)
-            user.save()
-            registered=True
+            if request.POST.get('password') == request.POST.get('password_confirmation'):
+                if not User.objects.filter(username=request.POST.get('username')).exists():
+                    user=user_form.save()
+                    user.set_password(user.password)
+                    user.save()
+                    return redirect(reverse('booklists:login') + '?registered=True')
+                else:
+                    errors = "User already exists"
+            else:
+                errors = "Passwords do not match"
         else:
-            print(user_form.errors)
+            errors = user_form.errors
     else:
         user_form=UserForm()
-    context = {'user_form': user_form,'profile_form': registered}
+
+    context = {'user_form': user_form, 'errors' : errors}
     return render(request, 'booklists/auth/register.html',context)
 
 def index(request):
@@ -51,6 +58,6 @@ def index(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('booklist:index'))
+    return redirect(reverse('booklists:index'))
 
 

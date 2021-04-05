@@ -4,15 +4,25 @@
 
 {% block body_block %}
 
-    <form class="form-signin" method="post">
+
+
+    <form class="form-signin" method="post" action="{% url 'booklists:login' %}">
         {% csrf_token %}
 
         {% include 'booklists/partials/auth-message.html'%}
 
+        {% if registered %}
+            <div class="alert alert-success"><strong>{% translate 'Success' %}!</strong> {% translate 'You can now log in' %}</div>
+        {% endif %}
+
+        {% if errors != None %}
+            <div class="alert alert-danger"><strong>{% translate 'Failure' %}!</strong> {{  errors  }} </div>
+        {% endif %}
+
         <div class="form-group">
-            <strong><label for="inputEmail">{% translate 'Email address' %}</label></strong>
-            <input type="email" id="inputEmail" class="form-control" placeholder="{% translate 'Enter email address' %}" required autofocus
-                   name="email">
+            <strong><label for="inputUsername">{% translate 'Username' %}</label></strong>
+            <input type="text" id="inputUsername" class="form-control" placeholder="{% translate 'Enter username' %}" required autofocus
+                   name="username">
         </div>
 
         <div class="form-group">
@@ -26,7 +36,7 @@
 
         <div class="text-center">
             {% comment %} Asked in login page {% endcomment %}
-            {% translate 'New here' %}? <a href="{% url 'booklists:user_register' %}">{% translate 'Create an account!' %}!</a>
+            {% translate 'New here' %}? <a href="{% url 'booklists:register' %}">{% translate 'Create an account!' %}!</a>
         </div>
 
     </form>
