@@ -65,31 +65,13 @@
                 {% endblock %}
                 <div class="card">
                     <div class="card-header">
-                        Top 5 Books On BookLists
-                    </div>
-                    <div class="card-body">
-                        <!-- TODO add missing translations on this page and potentially export to partials -->
-                        <ol>
-                            <li>Crime and punishment</li>
-                            <li>Things fall apart</li>
-                            <li>Moby Dick</li>
-                            <li>The Lord Of The Rings</li>
-                            <li>Catch-22</li>
-                        </ol>
-                    </div>
-                </div>
-
-                <div class="card mt-3">
-                    <div class="card-header">
-                        Top 5 Authors On BookLists
+                        {% translate 'Top 5 Books On BookLists' %}
                     </div>
                     <div class="card-body">
                         <ol>
-                            <li>Crime and punishment</li>
-                            <li>Things fall apart</li>
-                            <li>Moby Dick</li>
-                            <li>The Lord Of The Rings</li>
-                            <li>Catch-22</li>
+                            {% for book in top_5_books %}
+                                <li><a href="{% url 'booklists:show_book' book.slug %}">{{ book.name }}</a></li>
+                            {% endfor %}
                         </ol>
                     </div>
                 </div>
