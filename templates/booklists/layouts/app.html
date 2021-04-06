@@ -20,10 +20,12 @@
 
     {# Load CSS and JavaScript #}
     {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
 
     {# Display django.contrib.messages as Bootstrap alerts #}
     {% bootstrap_messages %}
+
+    <!-- using font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="{% static "css/main.css"%}">
     {% block custom_css %}
@@ -95,6 +97,7 @@
         </div>
     </div>
 
+{% bootstrap_javascript jquery='full' %}
 
 {% block custom_js %}
 

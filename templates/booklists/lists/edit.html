@@ -2,6 +2,18 @@
 
 {% load i18n %}
 
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'booklists:index' %}">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page">User</li>
+            <li class="breadcrumb-item" aria-current="page"><a href="#">NOLINK {{ username }}</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{% url 'booklists:lists_index' username %}">Lists</a></li>
+            <li class="breadcrumb-item" aria-current="page">{{ current_data.name }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
 {% block body_block %}
 
     <div class="card-header">

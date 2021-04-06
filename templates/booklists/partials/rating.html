@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div class="stars" id="stars_{{ book.id }}">
+    <div class="url-to-rate d-none">{% url 'booklists:book_rate' book.slug %}</div>
+    <span class="fa fa-star star-{{ book.id }} {% if book.my_rating != None and book.my_rating.rating > 0.5 %}checked{% endif %}" id="stars_{{ book.id }}_1"></span>
+    <span class="fa fa-star star-{{ book.id }} {% if book.my_rating != None and book.my_rating.rating > 1.5 %}checked{% endif %}" id="stars_{{ book.id }}_2"></span>
+    <span class="fa fa-star star-{{ book.id }} {% if book.my_rating != None and book.my_rating.rating > 2.5 %}checked{% endif %}" id="stars_{{ book.id }}_3"></span>
+    <span class="fa fa-star star-{{ book.id }} {% if book.my_rating != None and book.my_rating.rating > 3.5 %}checked{% endif %}" id="stars_{{ book.id }}_4"></span>
+    <span class="fa fa-star star-{{ book.id }} {% if book.my_rating != None and book.my_rating.rating > 4.5 %}checked{% endif %}" id="stars_{{ book.id }}_5"></span>
+</div>
+<div class="rating" id="rating_{{ book.id }}">
+    {% translate 'Avg: ' %}
+    <span id="avg_{{ book.id }}">{{ book.average_rating|stringformat:".1f" }}</span> / 5.0
+</div>

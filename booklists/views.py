@@ -7,8 +7,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib import messages
 from booklists.models import *
-
-
+import json
 
 def user_login(request):
     if request.method =='POST':
@@ -105,7 +104,7 @@ def lists_edit(request, username, list_slug):
                 else:
                     messages.error(request, lists_create_form.errors)
 
-            return render(request, 'booklists/lists/edit.html', context={'current_data' : current_data})
+            return render(request, 'booklists/lists/edit.html', context={'current_data' : current_data, 'username' : username})
 
         else:
             # not found
@@ -113,3 +112,73 @@ def lists_edit(request, username, list_slug):
     else:
         # unauthorised
         return render(request, 'booklists/errors/401.html', status=401)
+
+def lists_view(request, username, list_slug):
+
+    current_list = List.objects.filter(slug=list_slug).first()
+    books = current_list.books.all()
+
+    if not current_list is None:
+
+        # only care about user ratings for "star" rating
+        for book in books:
+            book.my_rating = book.rating_set.filter(user=request.user).first()
+
+        context = {'current_list': current_list, 'books' : books,
+                    'username': username, 'user': request.user}
+
+        return render(request, 'booklists/lists/view.html', context)
+    else:
+
+        # not found
+        return render(request, 'booklists/errors/404.html', status=404)
+
+
+@login_required
+def book_rate(request, book_slug):
+    rating = request.POST.get('rating')
+    if request.method == 'POST':
+        rating = int(rating)
+
+        if 1 <= rating <= 5:
+
+            book = Book.objects.filter(slug=book_slug).first()
+
+            if not book is None:
+                user_rating = Rating.objects.filter(user=request.user, book=book).first()
+
+                # already rated, change
+                if user_rating:
+
+                    book.average_rating = ((book.average_rating * book.ratings_count) - user_rating.rating + rating) / book.ratings_count
+                    book.save()
+                    user_rating.rating = rating
+                    user_rating.save()
+
+                # new user rates
+                else:
+                    user_rating = Rating.objects.create(user=request.user, book=book, rating=rating)
+                    # floatint point erors should be small enough to not be noticed
+                    # should be much more efficient than recounting ratings
+
+                    # avoiding 0 division
+                    if book.ratings_count < 1:
+                        book.average_rating = rating
+                    else:
+                        book.average_rating = ( (book.average_rating * book.ratings_count) + rating ) / ( book.ratings_count + 1 )
+                    book.ratings_count += 1
+                    book.save()
+
+                return HttpResponse(json.dumps({'avg': "{:.1f}".format(book.average_rating), 'ratings_count':book.ratings_count, 'my': user_rating.rating}), status=200)
+
+            # book does not exist
+            else:
+                return HttpResponse(_("Book does not exist"), status=404)
+
+        # rating value is invalid
+        else:
+            return HttpResponse(_("Wrong rating value"), status=400)
+
+    # this view can only be POST as ajax sends request
+    else:
+        return HttpResponse(_("Method not allowed"), status=405)

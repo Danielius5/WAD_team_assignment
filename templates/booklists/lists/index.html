@@ -52,7 +52,7 @@
                                 {% endif %}
                             </td>
                             <td class="col-md-4 col-xs-1">
-                                <a class="btn btn-primary btn-sm" href="#" role="button">{% translate 'View' %}</a>
+                                <a class="btn btn-primary btn-sm" href="{% url 'booklists:lists_view' username list.slug %}" role="button">{% translate 'View' %}</a>
                                 <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username list.slug %}" role="button">{% translate 'Edit' %}</a>
                                 <a class="btn btn-danger btn-sm" href="#" role="button">{% translate 'Delete' %}</a>
                             </td>

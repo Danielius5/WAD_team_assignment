@@ -40,9 +40,11 @@ class Book(models.Model):
     name = models.CharField(max_length=128)
     release_date = models.DateField()
     no_of_pages = models.IntegerField()
-    cover = models.ImageField(upload_to='book_covers',default='/images/picturenotfound.jpg')
+    cover = models.ImageField(upload_to='book_covers', default='/images/picturenotfound.jpg')
     genre = models.ManyToManyField(Genre)
     slug = models.SlugField(unique=True, null=True)
+    average_rating = models.FloatField(default=0)
+    ratings_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
