@@ -1,0 +1,76 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+{% load static %}
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'booklists:index' %}">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page">User</li>
+            <li class="breadcrumb-item" aria-current="page"><a href="#">NOLINK {{ username }}</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{% url 'booklists:lists_index' username %}">Lists</a></li>
+            <li class="breadcrumb-item" aria-current="page">{{ current_list.name }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {{ current_list.name }}
+        {% if not current_list.is_public %}
+            <span class="badge badge-secondary">Private</span>
+        {% endif %}
+        <div class="float-right">
+            <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username current_list.slug %}" role="button">{% translate 'Edit' %}</a>
+            <a class="btn btn-danger btn-sm" href="#" role="button">{% translate 'Delete' %}</a>
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <!-- NEEDED FOR RATING -->
+        {% csrf_token %}
+        {% if books %}
+            {% for book in books %}
+                <div class="card mt-2 mb-2">
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h3>{{ book.name }}</h3>
+
+                                <p>
+                                    <i>
+                                        {% translate 'By' %} -
+                                        {{ book.authors.all|join:", " }}
+                                    </i>
+                                </p>
+                                <p>
+                                    {% translate 'Genre' %} -
+                                    {{ book.genre.all|join:", " }}
+                                </p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    {% include 'booklists/partials/rating.html' %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% translate 'No books in this list! Seach for and add them!' %}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block custom_js %}
+    <script src="{% static 'js/rating-stars.js'%}"></script>
+{% endblock %}
