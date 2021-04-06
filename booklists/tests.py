@@ -32,23 +32,27 @@ class BookTestCase(TestCase):
         Genre.objects.create(name='testgenre')
         Author.objects.create(name='testauthor')
         Author.objects.create(name='testauthor2')
-        a=Book.objects.get_or_create(name='book',release_date=current,no_of_pages=4, ratings_count=100)[0]
-        a.authors.add(Author.objects.filter(name='testauthor').first())
-        a.authors.add(Author.objects.filter(name='testauthor2').first())
-        a.genre.add(Genre.objects.filter(name='testgenre').first())
-        a.genre.add(Genre.objects.filter(name='testgenre').first())
+        a=Book.objects.create(name='book',release_date=current,no_of_pages=4)
+ 
+
 
     def test_book(self):
 
 
         book=Book.objects.get(name="book")
-        self.assertEqual(book.average_rating,0.0) #default
-
-
         self.assertEqual(book.__str__(),"book")
         self.assertEqual(book.id,1)
         self.assertEqual(book.slug,"1-book")
+        
+        self.assertEqual(book.average_rating,0.0) #default
+        self.assertEqual(book.ratings_count,0)
 
+        book.authors.add(Author.objects.filter(name='testauthor').first())
+        book.authors.add(Author.objects.filter(name='testauthor2').first())
+
+        
+        book.genre.add(Genre.objects.filter(name='testgenre').first())
+        book.genre.add(Genre.objects.filter(name='testgenre').first())
 
 class RatingTestCase(TestCase):
     def setUp(self):
@@ -71,12 +75,11 @@ class CommentTestCase(TestCase):
 
         
     def test_comment(self):
-
-        c=Comment.objects.filter(comment="This is a test comment").first()
+        
+        c=Comment.objects.all().first()
         self.assertEqual(c.__str__(),"Comment This is a test comment by <bound method AbstractBaseUser.get_username of <User: testuser>>")
-        self.assertEqual(c.id,2)
+        self.assertEqual(c.id,2)#newest first
 
-       
 
 
 #Views test
