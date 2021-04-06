@@ -16,5 +16,6 @@ urlpatterns = [
     path('user/<str:username>/lists/<slug:list_slug>/delete', views.list_delete, name='lists_delete'),
     path('book/<slug:book_slug>/rate', views.book_rate, name='book_rate'),
     path('search', views.search, name='search'),
+    path('author/<slug:author_slug>', views.author_show, name='author_show'),
     path('', views.index, name='index'),
 ]

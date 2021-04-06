@@ -29,7 +29,9 @@
                     <p>
                         <i>
                             {% translate 'By' %} -
-                            {{ book.authors.all|join:", " }}
+                            {% for author in book.authors.all %}
+                                <a href="{% url 'booklists:author_show' author.slug %}">{{ author.name }}</a>,
+                            {% endfor %}
                         </i>
                     </p>
                     <p>

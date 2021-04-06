@@ -1,0 +1,67 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+{% load static %}
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'booklists:index' %}">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page">{% translate 'Author' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ author.name }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {{ author.name }}
+    </div>
+
+    <div class="card-body">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{% translate 'Author' %}: {{ author.name }}</h4>
+                    <p><strong>{% translate 'About' %}</strong>: {{ author.about }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{% translate 'Books Found' %}:</h4>
+
+                    {% if books %}
+                        <table class="table table-striped table-bordered text-center">
+                            <thead>
+                            <tr class="d-flex">
+                                <th class="col-md-1 col-xs-1">#</th>
+                                <th class="col-md-11">{% translate 'Book' %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for book in books %}
+                                    <tr class="d-flex">
+                                        <td class="col-md-1 col-xs-1">{{ forloop.counter }}</td>
+                                        <td class="col-md-11">
+                                            <a href="{% url 'booklists:show_book' book.slug %}">{{ book.name }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    {% else %}
+
+                    {% translate 'No Books Found!' %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script src="{% static 'js/delete-button.js'%}"></script>
+{% endblock %}

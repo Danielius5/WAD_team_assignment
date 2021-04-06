@@ -248,3 +248,13 @@ def search(request):
     users = User.objects.filter(query_users)
 
     return render(request, 'booklists/search-results.html', context= {'books' : books, 'authors' : authors, 'users' : users, 'search' : search})
+
+def author_show(request, author_slug):
+    author = Author.objects.filter(slug=author_slug).first()
+
+    if author:
+        books = author.book_set.all()
+        return render(request, 'booklists/authors/view.html', context={'author' : author, 'books' : books})
+    else:
+        # not found
+        return render(request, 'booklists/errors/404.html', status=404)
