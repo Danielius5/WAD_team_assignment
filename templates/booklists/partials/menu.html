@@ -22,9 +22,9 @@
 
             </ul>
             <ul class="navbar-nav ml-5">
-                <form class="d-flex">
+                <form class="d-flex" action="{% url 'booklists:search' %}">
                     <div class="input-group">
-                        <input type="text" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="search-button">
+                        <input type="text" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="search-button" name="search">
                         <button class="btn btn-outline-light rounded-0" type="submit" id="search-button">Search</button>
                     </div>
                 </form>
