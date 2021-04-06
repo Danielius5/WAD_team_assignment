@@ -26,16 +26,24 @@
                 <div class="col-md-9">
                     <h3>{{ book.name }}</h3>
 
-                <p>
-                    <i>
-                        {% translate 'By' %} -
-                        {{ book.authors.all|join:", " }}
-                    </i>
-                </p>
-                <p>
-                    {% translate 'Genre' %} -
-                    {{ book.genre.all|join:", " }}
-                </p>
+                    <p>
+                        <i>
+                            {% translate 'By' %} -
+                            {{ book.authors.all|join:", " }}
+                        </i>
+                    </p>
+                    <p>
+                        {% translate 'Genre' %} -
+                        {{ book.genre.all|join:", " }}
+                    </p>
+                    <p>
+                        {% translate 'Number of pages' %} -
+                        {{ book.no_of_pages }}
+                    </p>
+                    <p>
+                        {% translate 'Release Date' %} -
+                        {{ book.release_date }}
+                    </p>
                 </div>
                 <div class="col-md-3 text-center">
                     {% include 'booklists/partials/rating.html' %}
