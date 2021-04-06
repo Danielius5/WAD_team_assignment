@@ -247,7 +247,7 @@ def search(request):
     authors = Author.objects.filter(query)
     users = User.objects.filter(query_users)
 
-    return render(request, 'booklists/search-results.html', context= {'books' : books, 'authors' : authors, 'users' : users, 'search' : search})
+    return render(request, 'booklists/search-results.html', context= {'books' : books, 'authors' : authors, 'users' : users, 'search' : search}, context_instance=RequestContext(request))
 
 def author_show(request, author_slug):
     author = Author.objects.filter(slug=author_slug).first()
