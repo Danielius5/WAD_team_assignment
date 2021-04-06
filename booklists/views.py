@@ -52,29 +52,15 @@ def user_logout(request):
 
 def show_book(request,book_name_slug):
     context_dict={}
-    print(book_name_slug)
     try:
         book=Book.objects.get(slug=book_name_slug)
         context_dict['book']=book
+
     except Book.DoesNotExist:
-        context_dict['book']=None
-    try:
-        comments=Comment.objects.filter(book=book)
-        context_dict['comments']=comments
-    except Comment.DoesNotExist:
-        context_dict['comments']=None
-   # try:
-   #     rating=Rating.objects.filter(book=book)
-   #     counter=0
-   #     total=0
-   #     for star in rating:
-   ##         total+=star.rating
-   #         counter+=1
-#
-    #    total/=counter
-    #    context_dict['rating']=total
-   # except Rating.DoesNotExist:
-   #     context_dict['rating']=None
+        return render(request, 'booklists/errors/404.html', status=404)
+
+    comments=Comment.objects.filter(book=book)
+    context_dict['comments']=comments
     
     if request.method == 'POST':
         comment=request.POST['comment']
@@ -87,9 +73,8 @@ def show_book(request,book_name_slug):
         else:   
             print('fail')
 
-    comment_form=CommentForm()        
     context_dict['user']=request.user
-    return render(request, 'booklists/book.html',context=context_dict)
+    return render(request, 'booklists/books/view.html',context=context_dict)
 
 def lists_index(request, username):
 

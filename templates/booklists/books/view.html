@@ -1,0 +1,89 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+{% load static %}
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'booklists:index' %}">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="#">{% translate 'Books NOLINK' %}</a></li>
+            <li class="breadcrumb-item" aria-current="page">{{ book.name }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {{ book.name }}
+    </div>
+
+    <div class="card-body">
+
+        <img src="/media/images/picturenotfound.jpg" class="img-fluid cover mx-auto d-block img-thumbnail" alt="{% translate 'cover of the book' %}">
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3>{{ book.name }}</h3>
+
+                <p>
+                    <i>
+                        {% translate 'By' %} -
+                        {{ book.authors.all|join:", " }}
+                    </i>
+                </p>
+                <p>
+                    {% translate 'Genre' %} -
+                    {{ book.genre.all|join:", " }}
+                </p>
+                </div>
+                <div class="col-md-3 text-center">
+                    {% include 'booklists/partials/rating.html' %}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 text-left">
+            <div class="col-md-12">
+                <h2 class="mb-4">{% translate 'Comments:' %}</h2>
+                {% if comments %}
+
+                    {% for comment in comments %}
+
+                        <blockquote class="blockquote text-center">
+                            <p class="mb-0">{{comment.comment}}</p>
+                            <footer class="blockquote-footer">{{comment.user.get_username}}</footer>
+                        </blockquote>
+                        <hr>
+                    {% endfor %}
+
+                {% else %}
+                    <h4>{% translate 'No comments yet!' %}</h4>
+                {% endif %}
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <form method="post" id="CommentForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <strong><label for="inputComment">{% translate 'Add Comment' %}?</label></strong>
+                            <textarea name="comment" rows="3" class="form-control" id="inputComment"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">{% translate 'Submit' %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <h4>{% translate 'Log in to write comments' %}!</h4>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static 'js/rating-stars.js'%}"></script>
+{% endblock %}

@@ -5,3 +5,7 @@
 .checked {
     color: #337ab7;
 }
+
+.cover {
+    max-width: 300px;
+}
