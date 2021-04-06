@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.contrib import messages
 from booklists.models import *
 import json
+from django.db.models import Q
 
 def user_login(request):
     if request.method =='POST':
@@ -231,3 +232,19 @@ def list_delete(request, username, list_slug):
     else:
         # unauthorised
         return render(request, 'booklists/errors/401.html', status=401)
+
+
+def search(request):
+    search = request.GET.get('search')
+    query_values = search.split()
+    query = Q(name__contains=query_values[0])
+    query_users = Q(username__contains=query_values[0])
+    for value in query_values:
+        query.add(Q(name__contains=value), Q.OR)
+        query_users.add(Q(username__contains=value), Q.OR)
+
+    books = Book.objects.filter(query)
+    authors = Author.objects.filter(query)
+    users = User.objects.filter(query_users)
+
+    return render(request, 'booklists/search-results.html', context= {'books' : books, 'authors' : authors, 'users' : users, 'search' : search})

@@ -1,0 +1,126 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+{% load static %}
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'booklists:index' %}">{% translate 'Search' %}</a></li>
+            <li class="breadcrumb-item" aria-current="page">{{ search }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {% translate 'Search' %} : {{ search }}
+    </div>
+
+    <div class="card-body">
+
+        <div class="container-fuild">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{% translate 'Users Found' %}:</h4>
+
+                    {% if users %}
+                        <table class="table table-striped table-bordered text-center">
+                            <thead>
+                            <tr class="d-flex">
+                                <th class="col-md-1 col-xs-1">#</th>
+                                <th class="col-md-11">{% translate 'User' %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    <tr class="d-flex">
+                                        <td class="col-md-1 col-xs-1">{{ forloop.counter }}</td>
+                                        <td class="col-md-11">
+                                            <a href="{% url 'booklists:lists_index' user.username %}">{{ user.username }}</a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    {% else %}
+
+                    {% translate 'No Users Found!' %}
+
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{% translate 'Books Found' %}:</h4>
+
+                    {% if books %}
+                        <table class="table table-striped table-bordered text-center">
+                            <thead>
+                            <tr class="d-flex">
+                                <th class="col-md-1 col-xs-1">#</th>
+                                <th class="col-md-11">{% translate 'Book' %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for book in books %}
+                                    <tr class="d-flex">
+                                        <td class="col-md-1 col-xs-1">{{ forloop.counter }}</td>
+                                        <td class="col-md-11">
+                                            <a href="{% url 'booklists:show_book' book.slug %}">{{ book.name }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    {% else %}
+
+                    {% translate 'No Books Found!' %}
+
+                    {% endif %}
+                </div>
+            </div>
+
+        <div class="row">
+                <div class="col-md-12">
+                    <h4>{% translate 'Authors Found' %}:</h4>
+
+                    {% if authors %}
+                        <table class="table table-striped table-bordered text-center">
+                            <thead>
+                            <tr class="d-flex">
+                                <th class="col-md-1 col-xs-1">#</th>
+                                <th class="col-md-11">{% translate 'Author' %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for author in authors %}
+                                    <tr class="d-flex">
+                                        <td class="col-md-1 col-xs-1">{{ forloop.counter }}</td>
+                                        <td class="col-md-11">
+                                            <a href="#">{{ author.name }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    {% else %}
+
+                    {% translate 'No Authors Found!' %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_js %}
+    <script src="{% static 'js/delete-button.js'%}"></script>
+{% endblock %}
