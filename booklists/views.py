@@ -73,6 +73,11 @@ def show_book(request,book_name_slug):
             comment_form.save()
         else:   
             print('fail')
+    lists = []
+    if request.user.is_authenticated:
+        lists = List.objects.filter(user=request.user)
+
+    context_dict['lists'] = lists
 
     context_dict['user']=request.user
     return render(request, 'booklists/books/view.html',context=context_dict)
@@ -142,8 +147,16 @@ def lists_edit(request, username, list_slug):
 
 def lists_view(request, username, list_slug):
 
+    added_flag = bool(request.GET.get('added', False))
+    deleted_flag = bool(request.GET.get('deleted', False))
+
     current_list = List.objects.filter(slug=list_slug).first()
     books = current_list.books.all()
+
+    lists = []
+    # used for add to button
+    if request.user.is_authenticated:
+        lists = List.objects.filter(user=request.user)
 
     if not current_list is None:
 
@@ -151,8 +164,8 @@ def lists_view(request, username, list_slug):
         for book in books:
             book.my_rating = book.rating_set.filter(user=request.user).first()
 
-        context = {'current_list': current_list, 'books' : books,
-                    'username': username, 'user': request.user}
+        context = {'current_list': current_list, 'books' : books, 'lists' : lists,
+                    'username': username, 'user': request.user, 'added' : added_flag, 'deleted': deleted_flag}
 
         return render(request, 'booklists/lists/view.html', context)
     else:
@@ -247,7 +260,7 @@ def search(request):
     authors = Author.objects.filter(query)
     users = User.objects.filter(query_users)
 
-    return render(request, 'booklists/search-results.html', context= {'books' : books, 'authors' : authors, 'users' : users, 'search' : search}, context_instance=RequestContext(request))
+    return render(request, 'booklists/search-results.html', context= {'books' : books, 'authors' : authors, 'users' : users, 'search' : search})
 
 def author_show(request, author_slug):
     author = Author.objects.filter(slug=author_slug).first()
@@ -258,3 +271,64 @@ def author_show(request, author_slug):
     else:
         # not found
         return render(request, 'booklists/errors/404.html', status=404)
+
+
+@login_required
+def book_add_to_list(request, username, list_slug, book_slug):
+
+    book = Book.objects.filter(slug=book_slug).first()
+    if not book is None:
+
+        if request.method == 'GET':
+            list = List.objects.filter(slug=list_slug).first()
+
+            if not list is None:
+                if list.user == request.user:
+                    if not book in list.books.all():
+                        list.books.add(book)
+                else:
+                    return render(request, 'booklists/errors/401.html', status=401)
+
+            else:
+                # not found
+                return render(request, 'booklists/errors/404.html', status=404)
+
+            return redirect(reverse('booklists:lists_view', kwargs={'username': request.user.username, 'list_slug': list.slug}) + '?added=True')
+
+        # this view can only be GET
+        else:
+            return render(request, 'booklists/errors/405.html', status=405)
+    else:
+        # not found
+        return render(request, 'booklists/errors/404.html', status=404)
+
+@login_required
+def book_delete_from_list(request, username, list_slug, book_slug):
+
+    book = Book.objects.filter(slug=book_slug).first()
+
+    if not book is None:
+
+        if request.method == 'GET':
+            list = List.objects.filter(slug=list_slug).first()
+
+            if not list is None:
+                if list.user == request.user:
+                    if book in list.books.all():
+                        list.books.remove(book)
+                else:
+                    return render(request, 'booklists/errors/401.html', status=401)
+            else:
+                # not found
+                return render(request, 'booklists/errors/404.html', status=404)
+
+            return redirect(reverse('booklists:lists_view', kwargs={'username': username, 'list_slug': list.slug}) + '?deleted=True')
+
+        # this view can only be GET
+        else:
+            return render(request, 'booklists/errors/405.html', status=405)
+    else:
+        # not found
+        return render(request, 'booklists/errors/404.html', status=404)
+
+

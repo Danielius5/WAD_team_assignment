@@ -29,6 +29,13 @@
 
     <div class="card-body">
 
+        {% if added  %}
+            <div class="alert alert-success"><strong>{% translate 'Success' %}!</strong> {% translate 'Added the book' %}!</div>
+        {% endif %}
+        {% if deleted  %}
+            <div class="alert alert-danger"><strong>{% translate 'Success' %}!</strong> {% translate 'Deleted the book' %}!</div>
+        {% endif %}
+
         <!-- NEEDED FOR RATING -->
         {% csrf_token %}
         {% if books %}
@@ -38,12 +45,14 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <h3>{{ book.name }}</h3>
+                                    <h3><a href="{% url 'booklists:show_book' book.slug %}">{{ book.name }}</a></h3>
 
                                 <p>
                                     <i>
                                         {% translate 'By' %} -
-                                        {{ book.authors.all|join:", " }}
+                                        {% for author in book.authors.all %}
+                                            <a href="{% url 'booklists:author_show' author.slug %}">{{ author.name }}</a>,
+                                        {% endfor %}
                                     </i>
                                 </p>
                                 <p>
@@ -57,7 +66,25 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
+                                    <div class="float-right">
+                                        <div class="dropdown show d-inline">
+                                            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button"
+                                               id="dropdownAddToList" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false">
+                                                {% translate 'Add to...' %}
+                                            </a>
 
+                                            <div class="dropdown-menu" aria-labelledby="dropdownAddToList">
+                                                {% for list in lists %}
+                                                    {% if list != current_list %}
+                                                        <a class="dropdown-item" href="{% url 'booklists:add_book' username list.slug book.slug %}">{{ list.name }}</a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        <a href="{% url 'booklists:book_delete_from_list' username current_list.slug book.slug %}" class="btn btn-danger btn-sm">{% translate 'Remove from list' %}</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
