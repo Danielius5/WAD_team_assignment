@@ -1,0 +1,22 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+
+{% block breadcrumbs %}
+
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {% translate 'ERROR' %}
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="alert alert-danger"><strong>404: {% translate 'Not Found' %}!</strong> {% translate 'Sorry, but we could not find this page' %}</div>
+
+    </div>
+
+{% endblock %}

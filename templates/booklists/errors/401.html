@@ -1,0 +1,22 @@
+{% extends 'booklists/layouts/app.html' %}
+
+{% load i18n %}
+
+{% block breadcrumbs %}
+
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="card-header">
+        {% translate 'ERROR' %}
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="alert alert-danger"><strong>401: {% translate 'Unauthorised' %}!</strong> {% translate 'Sorry, but you are not authorised to access this page' %}</div>
+
+    </div>
+
+{% endblock %}

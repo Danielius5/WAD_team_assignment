@@ -23,6 +23,9 @@ def populate():
             'name' : 'Blindside',
             'release_date' : '2020-06-21',
             'no_of_pages' : 352,
+            'average_rating': 4,
+            'ratings_count': 1,
+
         },
     ]
 
