@@ -46,6 +46,22 @@
                         {% translate 'Release Date' %} -
                         {{ book.release_date }}
                     </p>
+
+                {%if user.is_authenticated %}
+                    <div class="dropdown show d-inline">
+                        <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button"
+                           id="dropdownAddToList" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            {% translate 'Add to...' %}
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownAddToList">
+                            {% for list in lists %}
+                                <a class="dropdown-item" href="{% url 'booklists:add_book' username list.slug book.slug %}">{{ list.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
                 </div>
                 <div class="col-md-3 text-center">
                     {% include 'booklists/partials/rating.html' %}
