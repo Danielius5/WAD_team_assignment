@@ -57,7 +57,7 @@
 
                         <div class="dropdown-menu" aria-labelledby="dropdownAddToList">
                             {% for list in lists %}
-                                <a class="dropdown-item" href="{% url 'booklists:add_book' username list.slug book.slug %}">{{ list.name }}</a>
+                                <a class="dropdown-item" href="{% url 'booklists:add_book' user.username list.slug book.slug %}">{{ list.name }}</a>
                             {% endfor %}
                         </div>
                     </div>
