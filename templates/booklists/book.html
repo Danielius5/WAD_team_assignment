@@ -1,0 +1,24 @@
+{% if book %}
+    {{ book.name }}
+{% else %}
+    unknown
+{% endif %}
+{% if user.is_authenticated %}
+    <form type=form method=post id=CommentForm>
+        {% csrf_token %}
+        <input name="comment" type="text" >
+
+        <button type="submit">submit</button>
+    </form>
+
+{% endif %}
+
+{% if book %}
+
+{% for comment in comments %}
+    {{comment.user.get_username}}
+    {{comment.comment}}
+
+{% endfor %}
+
+{% endif %}
