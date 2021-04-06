@@ -11,6 +11,7 @@ urlpatterns = [
     path('user/<str:username>/lists/create', views.lists_create, name='lists_create'),
     path('user/<str:username>/lists/<slug:list_slug>', views.lists_view, name='lists_view'),
     path('user/<str:username>/lists/<slug:list_slug>/edit', views.lists_edit, name='lists_edit'),
+    path('user/<str:username>/lists/<slug:list_slug>/delete', views.list_delete, name='lists_delete'),
     path('book/<slug:book_slug>/rate', views.book_rate, name='book_rate'),
     path('', views.index, name='index'),
 ]

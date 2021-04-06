@@ -1,7 +1,7 @@
 {% extends 'booklists/layouts/app.html' %}
 
 {% load i18n %}
-
+{% load static %}
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -29,7 +29,10 @@
             <div class="alert alert-success"><strong>{% translate 'Success' %}!</strong> {% translate 'A new list created' %}!</div>
         {% endif %}
         {% if edited  %}
-            <div class="alert alert-success"><strong>{% translate 'Success' %}!</strong> {% translate 'List successfully edited' %}!</div>
+            <div class="alert alert-warning"><strong>{% translate 'Success' %}!</strong> {% translate 'List successfully edited' %}!</div>
+        {% endif %}
+        {% if deleted  %}
+            <div class="alert alert-danger"><strong>{% translate 'Success' %}!</strong> {% translate 'List successfully deleted' %}!</div>
         {% endif %}
 
         <table class="table table-striped table-bordered text-center">
@@ -54,7 +57,7 @@
                             <td class="col-md-4 col-xs-1">
                                 <a class="btn btn-primary btn-sm" href="{% url 'booklists:lists_view' username list.slug %}" role="button">{% translate 'View' %}</a>
                                 <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username list.slug %}" role="button">{% translate 'Edit' %}</a>
-                                <a class="btn btn-danger btn-sm" href="#" role="button">{% translate 'Delete' %}</a>
+                                <a class="btn btn-danger btn-sm confirm-delete" data-delete-url="{% url 'booklists:lists_delete' username list.slug %}" href="#" role="button">{% translate 'Delete' %}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -67,4 +70,8 @@
         </table>
     </div>
 
+{% endblock %}
+
+{% block custom_js %}
+    <script src="{% static 'js/delete-button.js'%}"></script>
 {% endblock %}

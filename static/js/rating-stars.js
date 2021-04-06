@@ -60,4 +60,4 @@ $('.stars .fa-star').click(function() {
 
     });
 
-})
+});

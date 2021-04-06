@@ -55,6 +55,7 @@ def lists_index(request, username):
 
     created_flag = bool(request.GET.get('created', False))
     edited_flag = bool(request.GET.get('edited', False))
+    deleted_flag = bool(request.GET.get('deleted', False))
 
     if request.method == 'GET':
 
@@ -64,7 +65,7 @@ def lists_index(request, username):
 
         lists = lists.filter(user=User.objects.filter(username=username).first())
 
-        context = {'lists' : lists, 'created' : created_flag, 'username' : username, 'current_user' : request.user, 'edited' : edited_flag}
+        context = {'lists' : lists, 'created' : created_flag, 'username' : username, 'current_user' : request.user, 'edited' : edited_flag, 'deleted' : deleted_flag}
         return render(request, 'booklists/lists/index.html', context)
 
 @login_required
@@ -182,3 +183,26 @@ def book_rate(request, book_slug):
     # this view can only be POST as ajax sends request
     else:
         return HttpResponse(_("Method not allowed"), status=405)
+
+
+@login_required
+def list_delete(request, username, list_slug):
+
+    if request.user.username == username:
+        list = List.objects.filter(slug=list_slug).first()
+
+        if not list is None:
+
+            if request.method == 'GET':
+                list.delete()
+                return redirect(reverse('booklists:lists_index', kwargs={'username': username}) + '?deleted=True')
+
+            # this view can only be GET
+            else:
+                return render(request, 'booklists/errors/405.html', status=405)
+        else:
+            # not found
+            return render(request, 'booklists/errors/404.html', status=404)
+    else:
+        # unauthorised
+        return render(request, 'booklists/errors/401.html', status=401)
