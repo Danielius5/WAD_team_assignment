@@ -21,7 +21,20 @@ class UserForm(UserCreationForm):
 class ListForm(forms.ModelForm):
     name = forms.CharField(max_length=128)
     is_public = forms.BooleanField(initial=False, required=False)
-
+    
     class Meta:
         model = List
         fields = ('name', 'is_public')
+        
+class CommentForm(forms.ModelForm):
+  
+    class Meta:
+        model=Comment
+        fields =('user','book','comment')
+
+
+class RatingForm(forms.ModelForm):
+  
+    class Meta:
+        model=Rating
+        fields = ('user','book','rating')
