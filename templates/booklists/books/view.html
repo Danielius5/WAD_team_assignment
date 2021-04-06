@@ -20,7 +20,7 @@
 
     <div class="card-body">
 
-        <img src="/media/images/picturenotfound.jpg" class="img-fluid cover mx-auto d-block img-thumbnail" alt="{% translate 'cover of the book' %}">
+        <img src="{{ MEDIA_URL }}{{ book.cover }}" class="img-fluid cover mx-auto d-block img-thumbnail" alt="{% translate 'cover of the book' %}">
         <div class="container-fluid mt-5">
             <div class="row">
                 <div class="col-md-9">
