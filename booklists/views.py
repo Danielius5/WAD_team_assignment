@@ -170,7 +170,7 @@ def lists_view(request, username, list_slug):
 
     if not current_list is None:
 
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and books:
             # only care about user ratings for "star" rating
             for book in books:
                 book.my_rating = book.rating_set.filter(user=request.user).first()
