@@ -18,7 +18,7 @@
     <div class="card-header">
         {{ username }} {% translate 'lists' %}
 
-        {% if current_user.is_authenticated and current_user.username == username %}
+        {% if request_user.is_authenticated and request_user.username == username %}
             <a class="btn btn-success btn-sm float-right" href="{% url 'booklists:lists_create' username %}" role="button">{% translate 'Add List' %}</a>
         {% endif %}
     </div>
@@ -56,8 +56,10 @@
                             </td>
                             <td class="col-md-4 col-xs-1">
                                 <a class="btn btn-primary btn-sm" href="{% url 'booklists:lists_view' username list.slug %}" role="button">{% translate 'View' %}</a>
-                                <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username list.slug %}" role="button">{% translate 'Edit' %}</a>
-                                <a class="btn btn-danger btn-sm confirm-delete" data-delete-url="{% url 'booklists:lists_delete' username list.slug %}" href="#" role="button">{% translate 'Delete' %}</a>
+                                {% if request_user.is_authenticated and current_user.username == username %}
+                                    <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username list.slug %}" role="button">{% translate 'Edit' %}</a>
+                                    <a class="btn btn-danger btn-sm confirm-delete" data-delete-url="{% url 'booklists:lists_delete' username list.slug %}" href="#" role="button">{% translate 'Delete' %}</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
