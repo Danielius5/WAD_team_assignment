@@ -163,11 +163,13 @@ def lists_view(request, username, list_slug):
     current_list = List.objects.filter(slug=list_slug).first()
 
     lists = []
-    # used for add to button
-    if request.user.is_authenticated:
-        lists = List.objects.filter(user=request.user)
 
-    if not current_list is None:
+
+    if current_list:
+
+        # used for add to button
+        if request.user.is_authenticated:
+            lists = List.objects.filter(user=request.user)
 
         books = current_list.books.all()
 
