@@ -170,9 +170,10 @@ def lists_view(request, username, list_slug):
 
     if not current_list is None:
 
-        # only care about user ratings for "star" rating
-        for book in books:
-            book.my_rating = book.rating_set.filter(user=request.user).first()
+        if request.user.is_authenticated:
+            # only care about user ratings for "star" rating
+            for book in books:
+                book.my_rating = book.rating_set.filter(user=request.user).first()
 
         context = {'current_list': current_list, 'books' : books, 'lists' : lists,
                     'username': username, 'user': request.user, 'added' : added_flag, 'deleted': deleted_flag}

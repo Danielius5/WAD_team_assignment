@@ -21,10 +21,12 @@
         {% if not current_list.is_public %}
             <span class="badge badge-secondary">Private</span>
         {% endif %}
+        {% if request_user.is_authenticated and request_user.username == username %}
         <div class="float-right">
             <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username current_list.slug %}" role="button">{% translate 'Edit' %}</a>
             <a class="btn btn-danger btn-sm confirm-delete" data-delete-url="{% url 'booklists:lists_delete' username current_list.slug %}" href="#" role="button">{% translate 'Delete' %}</a>
         </div>
+        {% endif %}
     </div>
 
     <div class="card-body">
