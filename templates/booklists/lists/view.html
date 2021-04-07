@@ -7,9 +7,9 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'booklists:index' %}">Home</a></li>
             <li class="breadcrumb-item" aria-current="page">User</li>
-            <li class="breadcrumb-item" aria-current="page"><a href="#">NOLINK {{ username }}</a></li>
+            <li class="breadcrumb-item" aria-current="page">{{ username }}</li>
             <li class="breadcrumb-item" aria-current="page"><a href="{% url 'booklists:lists_index' username %}">Lists</a></li>
-            <li class="breadcrumb-item" aria-current="page">{{ current_list.name }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ current_list.name }}</li>
         </ol>
     </nav>
 {% endblock %}
@@ -23,7 +23,7 @@
         {% endif %}
         <div class="float-right">
             <a class="btn btn-warning btn-sm" href="{% url 'booklists:lists_edit' username current_list.slug %}" role="button">{% translate 'Edit' %}</a>
-            <a class="btn btn-danger btn-sm" href="#" role="button">{% translate 'Delete' %}</a>
+            <a class="btn btn-danger btn-sm confirm-delete" data-delete-url="{% url 'booklists:lists_delete' username current_list.slug %}" href="#" role="button">{% translate 'Delete' %}</a>
         </div>
     </div>
 
@@ -83,7 +83,8 @@
                                             </div>
                                         </div>
 
-                                        <a href="{% url 'booklists:book_delete_from_list' username current_list.slug book.slug %}" class="btn btn-danger btn-sm">{% translate 'Remove from list' %}</a>
+                                        <a class="btn btn-danger btn-sm confirm-delete" data-delete-url="{% url 'booklists:book_delete_from_list' username current_list.slug book.slug %}" href="#" role="button">{% translate 'Remove from list' %}</a>
+
                                     </div>
                                 </div>
                             </div>
@@ -100,4 +101,5 @@
 
 {% block custom_js %}
     <script src="{% static 'js/rating-stars.js'%}"></script>
+    <script src="{% static 'js/delete-button.js'%}"></script>
 {% endblock %}

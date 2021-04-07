@@ -5,23 +5,23 @@
 
         <a class="navbar-brand" href="{% url 'booklists:index' %}">BookLists</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBooklists" aria-controls="navbarBooklists" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarBooklists">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-5">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">{% translate 'My Lists' %}</a>
-                </li>
+                {% if request_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'booklists:lists_index' request_user.username %}">{% translate 'My Lists' %}</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">{% translate 'Create List' %}</a>
-                </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'booklists:lists_create' request_user.username %}">{% translate 'Create List' %}</a>
+                    </li>
+                {% endif %}
             </ul>
-            <ul class="navbar-nav ml-5">
+            <ul class="navbar-nav">
                 <form class="d-flex" action="{% url 'booklists:search' %}">
                     <div class="input-group">
                         <input type="text" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="search-button" name="search">
@@ -31,13 +31,27 @@
             </ul>
 
             <ul class="navbar-nav justify-content-end ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">{% translate 'Admin' %}</a>
-                </li>
+                {% if request_user.is_authenticated %}
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'booklists:logout' %}">{% translate 'Log Out' %}</a>
-                </li>
+                    {% if request_user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}">{% translate 'Admin' %}</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'booklists:logout' %}">{% translate 'Log Out' %}</a>
+                    </li>
+
+                {% else %}
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'booklists:login' %}">{% translate 'Log in' %}</a>
+                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'booklists:register' %}">{% translate 'Register' %}</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
