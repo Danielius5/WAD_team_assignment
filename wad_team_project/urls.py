@@ -24,4 +24,6 @@ from booklists import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('booklists/', include('booklists.urls')),
+    path ('',views.index,name='index'),
+    
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

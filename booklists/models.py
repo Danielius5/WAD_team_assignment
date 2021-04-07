@@ -8,14 +8,14 @@ class Author(models.Model):
     
     name = models.CharField(max_length=128)
     about = models.TextField(max_length=256,null=True,blank=True)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=True, null=True,blank=True,editable=False)
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         super(Author, self).save(*args, **kwargs)
 
-        if not self.slug:
+        if self.slug!=slugify(str(self.id) + "-" + self.name):
             self.slug = slugify(str(self.id) + "-" + self.name)
             self.save()
 
@@ -23,14 +23,14 @@ class Author(models.Model):
 class Genre(models.Model):
     
     name = models.CharField(max_length=128)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=True, null=True,blank=True,editable=False)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         super(Genre, self).save(*args, **kwargs)
-        if not self.slug:
+        if self.slug!= slugify(str(self.id) + "-" + self.name):
             self.slug = slugify(str(self.id) + "-" + self.name)
             self.save()
     
@@ -42,7 +42,7 @@ class Book(models.Model):
     no_of_pages = models.IntegerField()
     cover = models.ImageField(upload_to='book_covers', default='/book_covers/picturenotfound.jpg')
     genre = models.ManyToManyField(Genre)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=True, null=True,blank=True,editable=False)
     average_rating = models.FloatField(default=0)
     ratings_count = models.IntegerField(default=0)
 
@@ -51,7 +51,7 @@ class Book(models.Model):
 
     def save(self, *args, **kwargs):
         super(Book, self).save(*args, **kwargs)
-        if not self.slug:
+        if self.slug!= slugify(str(self.id) + "-" + self.name):
             self.slug = slugify(str(self.id) + "-" + self.name)
             self.save()
     
@@ -85,13 +85,13 @@ class List(models.Model):
     books = models.ManyToManyField(Book)
     name = models.CharField(max_length=128)
     is_public = models.BooleanField(default=True)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=True, null=True,blank=True,editable=False)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         super(List, self).save(*args, **kwargs)
-        if not self.slug:
+        if self.slug!=slugify(str(self.id) + "-" + self.name):
             self.slug = slugify(str(self.id) + "-" + self.name)
             self.save()
