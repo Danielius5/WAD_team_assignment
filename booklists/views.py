@@ -161,7 +161,6 @@ def lists_view(request, username, list_slug):
     deleted_flag = bool(request.GET.get('deleted', False))
 
     current_list = List.objects.filter(slug=list_slug).first()
-    books = current_list.books.all()
 
     lists = []
     # used for add to button
@@ -169,6 +168,8 @@ def lists_view(request, username, list_slug):
         lists = List.objects.filter(user=request.user)
 
     if not current_list is None:
+
+        books = current_list.books.all()
 
         if request.user.is_authenticated and books:
             # only care about user ratings for "star" rating
